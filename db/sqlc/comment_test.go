@@ -4,7 +4,9 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/test-go/testify/require"
+	"gopkg.in/guregu/null.v4/zero"
 )
 
 func createRandomComment(t *testing.T) Comment {
@@ -62,4 +64,32 @@ func TestListComment(t *testing.T) {
 	require.Len(t, comments, 5)
 }
 
-func TestUpdateComment
+func TestUpdateComment(t *testing.T) {
+	comment1 := createRandomComment(t)
+	user := createRandomUser(t)
+
+	arg := UpdateCommentParams{
+		ID: comment1.ID,
+		Comment: zero.StringFrom(fake.Lorem().Text(30)),
+		UserID: zero.IntFrom(user.ID),
+		LikeCount: zero.IntFrom(int64(fake.RandomDigit())),
+		PostID: zero.IntFrom(int64(fake.RandomDigit())),
+	}
+
+	comment2, err := testStore.UpdateComment(context.Background(), arg)
+	require.NoError(t, err)
+
+	assert.NotEmpty(t, comment2)
+	assert.Equal(t, arg.Comment.String, string(comment2.Comment))
+}
+
+func TestDeleteComment(t *testing.T) {
+	comment1 := createRandomComment(t)
+	err := testStore.DeleteComment(context.Background(), comment1.ID)
+	assert.NoError(t, err)
+
+	comment2, err := testStore.GetComment(context.Background(), comment1.ID)
+	require.NoError(t, err)
+	assert.EqualError(t, err, ErrRecordNotFound.Error())
+	assert.Empty(t, comment2)
+}

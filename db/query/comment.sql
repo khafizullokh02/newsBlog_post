@@ -32,7 +32,7 @@ OFFSET sqlc.arg('offset');
 UPDATE comment
 SET
     comment = COALESCE(sqlc.narg(comment), comment),
-    parent_id = COALESCE(sqlc.narg(parent_id), parent_id),
+    parent_id = COALESCE(sqlc.arg(parent_id), parent_id),
     user_id = COALESCE(sqlc.narg(user_id), user_id),
     like_count = COALESCE(sqlc.narg(like_count), like_count),
     post_id = COALESCE(sqlc.narg(post_id), post_id)
