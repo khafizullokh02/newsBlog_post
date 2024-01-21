@@ -89,7 +89,6 @@ func TestDeleteComment(t *testing.T) {
 	assert.NoError(t, err)
 
 	comment2, err := testStore.GetComment(context.Background(), comment1.ID)
-	require.NoError(t, err)
 	assert.EqualError(t, err, ErrRecordNotFound.Error())
 	assert.Empty(t, comment2)
 }
