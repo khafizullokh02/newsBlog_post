@@ -14,7 +14,7 @@ CREATE TABLE "category" (
 CREATE TABLE "comment" (
   "id" bigserial PRIMARY KEY,
   "comment" varchar NOT NULL,
-  "parent_id" int DEFAULT null,
+  "parent_id" int DEFAULT NULL,
   "user_id" integer NOT NULL,
   "like_count" integer NOT NULL,
   "post_id" int NOT NULL
